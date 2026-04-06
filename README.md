@@ -17,9 +17,7 @@
 
 <a name="mode1"></a>
 
-## 方法3
-
-使用Github Action自动运行脚本
+## 使用Github Action自动运行脚本
 
 本方法需要你有一定的git使用经验
 
