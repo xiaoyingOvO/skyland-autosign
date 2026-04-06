@@ -2,18 +2,14 @@
 
 明日方舟森空岛一键签到脚本，基于python
 
-使用Github Actions托管（相比云函数来讲非常推荐，因为有日志会存储，而且也免费）
+使用Github Actions托管
 
 ## 快速导航
 
-- [使用Github Actions托管](#mode3)
-- [使用家用NAS](#mode4)
+- [使用Github Actions托管](#mode1)
 - [多账号支持](#multiple_account)
 - [多端登录问题](#multiple_login)
-- [有关新版本参数验证](#sign-headers)
-- [有关新版本获得Cred必传的dId参数](#dId)
 
-[视频用法]( https://www.bilibili.com/video/BV1DP411h7s6)
 
 <a name="mode1"></a>
 
@@ -45,7 +41,7 @@
 
 现在可以在Github Action Variable中设置变量`EXIT_WHEN_FAIL = on`，当签到发生错误时，脚本会返回错误，进而你会收到来自Github的邮件，及时知道脚本运行情况
 
-<a name="mode3"></a>
+<a name="multiple_account"></a>
 
 ## 多账号支持
 
