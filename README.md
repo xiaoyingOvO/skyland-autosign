@@ -55,7 +55,7 @@
 ![img_20.png](assets/img_20.png)
 ![img_21.png](assets/img_21.png)
 
-<a name="multiple_account"></a>
+<a name="multiple_login"></a>
 
 ## 多端登录的问题
 
