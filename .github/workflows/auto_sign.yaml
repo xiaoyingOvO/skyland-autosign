@@ -25,6 +25,8 @@ jobs:
           # PHONE: ${{ secrets.PHONE }}
           # PASSWORD: ${{ secrets.PASSWORD }}
           TOKEN: ${{ secrets.TOKEN }}
+          # 可选：缓存的设备dId。设置后CI将不再请求数美接口（海外IP会被其重置连接）
+          SKLAND_DID: ${{ secrets.SKLAND_DID }}
           SC3_SENDKEY: ${{ secrets.SC3_SENDKEY }}
           SC3_UID: ${{ secrets.SC3_UID }}
           EXIT_WHEN_FAIL: ${{ vars.EXIT_WHEN_FAIL }}
