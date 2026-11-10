@@ -3,6 +3,7 @@ import gzip
 import hashlib
 # 数美加密方法类
 import json
+import os
 import time
 import uuid
 
@@ -260,6 +261,11 @@ def get_smid():
 
 
 def get_d_id():
+    # GitHub Actions 等海外机房 IP 会被数美接口(fp-it.portal101.cn)直接重置连接，
+    # 因此支持通过环境变量 SKLAND_DID 传入一次成功获取的 dId 直接复用（dId 是设备ID，可长期复用）
+    cached_did = os.environ.get('SKLAND_DID')
+    if cached_did:
+        return cached_did
     # storageName = '.thumbcache_' + md5(SM_CONFIG['organization']) // 用于从本地存储获得值
     # uid = uuid()
     # priId=md5(uid)[0:16]
@@ -300,7 +306,7 @@ def get_d_id():
 
     des_result = _AES(GZIP(_DES(des_target)), priId.encode('utf-8'))
 
-    response = requests.post(devices_info_url, json={
+    payload = {
         'appId': 'default',
         'compress': 2,
         'data': des_result,
@@ -308,10 +314,19 @@ def get_d_id():
         'ep': ep,
         'organization': SM_CONFIG['organization'],
         'os': 'web'  # 固定值
-    })
+    }
 
-    resp = response.json()
-    if resp['code'] != 1100:
-        raise Exception("did计算失败，请联系作者")
-    # 开头必须是B
-    return 'B' + resp['detail']['deviceId']
+    # 连接被重置等网络问题偶发，重试 3 次并递增等待
+    last_error = None
+    for attempt in range(3):
+        try:
+            response = requests.post(devices_info_url, json=payload, timeout=15)
+            resp = response.json()
+            if resp['code'] != 1100:
+                raise Exception(f"did计算失败，接口返回：{resp}")
+            # 开头必须是B
+            return 'B' + resp['detail']['deviceId']
+        except Exception as e:
+            last_error = e
+            time.sleep(3 * (attempt + 1))
+    raise Exception(f"获取dId失败（已重试3次）：{last_error}")
